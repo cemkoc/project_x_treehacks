@@ -19,7 +19,7 @@ def hello_monkey():
     counter = session.get('counter', 0)
     counter += 1
     session['counter'] = counter
-    from_number = request.values.get('From', None)
+    from_number = request.values.get('From')
     to_respond = request.values.get('Body', None)
     if from_number in callers:
         caller = callers[from_number]
