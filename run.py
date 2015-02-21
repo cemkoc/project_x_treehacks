@@ -1,14 +1,18 @@
 from flask import Flask, request, redirect, session
 import twilio.twiml
  
-app = Flask(__name__)
-    
+
+
 callers = {
     "+14158675309": "Curious George",
     "+14158675310": "Boots",
     "+14158675311": "Virgil",
     "+14158025332": "Can Koc"
 }
+
+SECRET_KEY = "BEINSANE"
+app = Flask(__name__)
+app.config.from_object(__name__)
  
 @app.route("/", methods=['GET', 'POST'])
 def hello_monkey():
@@ -36,7 +40,7 @@ def hello_monkey():
  
     # Say a command, and listen for the caller to press a key. When they press
     # a key, redirect them to /handle-key.
-    resp.message(str(to_respond) + " counter: " + counter)
+    resp.message(str(to_respond) + " counter: " + str(counter))
     with resp.gather(numDigits=1, action="/handle-key", method="POST") as g:
         g.say("To speak to a real monkey, press 1. Press any other key to start over.")
  
