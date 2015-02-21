@@ -117,7 +117,7 @@ def handle_key():
 #     resp.message("Hello, Mobile Monkey")
 #     return str(resp)
 
-def readUrl(string, mode='walking'):
+def readUrl(string='Stanford Berkeley', mode='walking'):
     origin = string.split()[0]
     destination = string.split()[1]
     response = urllib2.urlopen('https://maps.googleapis.com/maps/api/directions/json?origin=' + origin + '&destination='+destination+'&mode=' + mode + '&key=AIzaSyAMShh7VdTHP_NDUPRW-dI0kCyFa84d9ko')
