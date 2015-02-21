@@ -55,9 +55,9 @@ def hello_monkey():
                 word = word.next()
             if word == 'Mode':
                 Mode = word.next()
-    print (To, From, Mode)
 
-            
+
+    resp.message(str(To, From, Mode))            
     directions = readUrl()
     with resp.gather(numDigits=1, action="/handle-key", method="POST") as g:
         g.say("To speak to a real monkey, press 1. Press any other key to start over.")
