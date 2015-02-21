@@ -42,6 +42,7 @@ def hello_monkey():
     # a key, redirect them to /handle-key.
     # resp.message("Original Message: \n" + str(to_respond) + "\ncounter: " + str(counter))
     if received_message == None:
+        resp.message("SENT NOTHING")
         return str(resp)
     received_message = str(received_message)
     # print received_message
