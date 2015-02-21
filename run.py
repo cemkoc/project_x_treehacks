@@ -11,16 +11,19 @@ callers = {
 def hello_monkey():
 	# Get the caller's phone number from imcoming Twilio request
 	from_number = request.values.get('From', None)
+	body = request.values.get('Body', None)
 	resp = twilio.twiml.Response()
 
 	if from_number in callers:
-		resp.say("Well hello there " + callers[from_number])
+		resp.message("Well hello there " + callers[from_number])
+
 	else:
-		resp.say("Hello Stranger")
+		resp.message("Hello Stranger")
 
-	with resp.gather(numDigits=1, action="/handle-key", method="POST") as g:
-		g.say("To speak to a real person, please press 1. Press any other key to start over.")
+	# with resp.gather(numDigits=1, action="/handle-key", method="POST") as g:
+	# 	g.say("To speak to a real person, please press 1. Press any other key to start over.")
 
+	resp.message("You sent me: " + body)
 	return str(resp)
 @app.route("/handle-key", methods=['GET', 'POST'])
 def handle_key():
