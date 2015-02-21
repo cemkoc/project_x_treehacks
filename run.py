@@ -19,7 +19,7 @@ def hello_monkey():
     counter = session.get('counter', 0)
     counter += 1
     session['counter'] = counter
-    from_number = request.values.get('From')
+    from_number = request.values.get('From', None)
     to_respond = request.values.get('Body', None)
     if from_number in callers:
         caller = callers[from_number]
@@ -40,7 +40,7 @@ def hello_monkey():
  
     # Say a command, and listen for the caller to press a key. When they press
     # a key, redirect them to /handle-key.
-    resp.message(str(to_respond) + " counter: " + str(counter))
+    resp.message("Original Message: \n" + str(to_respond) + "\ncounter: " + str(counter))
     with resp.gather(numDigits=1, action="/handle-key", method="POST") as g:
         g.say("To speak to a real monkey, press 1. Press any other key to start over.")
  
