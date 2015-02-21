@@ -28,7 +28,7 @@ def hello_monkey():
  
     resp = twilio.twiml.Response()
     # Greet the caller by name
-    resp.say("Hello " + caller)
+    # resp.say("Hello " + caller)
     
     
     counter = session.get('counter', 0)
