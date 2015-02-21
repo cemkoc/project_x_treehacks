@@ -47,36 +47,36 @@ def hello_monkey():
     received_message = str(received_message)
     # print received_message
 
-    if len(received_message) > 0:
-        To = []
-        From = []
-        Mode = []
-        i1 = received_message.split().index('To')
-        i2 = received_message.split().index('From')
-        i3 = received_message.split().index('Mode')
-        if len(received_message.split()) < 6 :
-            return str(resp)
-        To = received_message[i1+1:i2]
-        From = received_message[i2+1: i3]
-        Mode = received_message[i3+1:]
+    
+    To = []
+    From = []
+    Mode = []
+    i1 = received_message.split().index('To')
+    i2 = received_message.split().index('From')
+    i3 = received_message.split().index('Mode')
+    if len(received_message.split()) < 6 :
+        return str(resp)
+    To = received_message[i1+1:i2]
+    From = received_message[i2+1: i3]
+    Mode = received_message[i3+1:]
 
-        arg1 = ''
-        arg2 = ''
-        arg3 = ''
+    arg1 = ''
+    arg2 = ''
+    arg3 = ''
 
-        for el in To:
-            arg1 = arg1 + el
-        for el in From:
-            arg2 = arg2 + el
-        for el in Mode:
-            arg3 = arg3 + el
-               
-        directions = readUrl(arg1, arg2, arg3)
-        #directions is a list
-        to_respond = ''
-        for el in directions:
-            to_respond = to_respond + '\n' + el
-        resp.message(to_respond)
+    for el in To:
+        arg1 = arg1 + el
+    for el in From:
+        arg2 = arg2 + el
+    for el in Mode:
+        arg3 = arg3 + el
+           
+    directions = readUrl(arg1, arg2, arg3)
+    #directions is a list
+    to_respond = ''
+    for el in directions:
+        to_respond = to_respond + '\n' + el
+    resp.message(to_respond)
 
     with resp.gather(numDigits=1, action="/handle-key", method="POST") as g:
         g.say("To speak to a real monkey, press 1. Press any other key to start over.")
