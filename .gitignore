@@ -1,0 +1,6 @@
+venv
+/lib/*
+/include/*
+/bin/*
+*.pyc
+requirements.txt
