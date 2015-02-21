@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, session
 import twilio.twiml
- 
+import mapsTest 
 
 
 callers = {
@@ -20,7 +20,7 @@ def hello_monkey():
     counter += 1
     session['counter'] = counter
     from_number = request.values.get('From', None)
-    to_respond = request.values.get('Body', None)
+    received_message = request.values.get('Body', None)
     if from_number in callers:
         caller = callers[from_number]
     else:
@@ -40,7 +40,25 @@ def hello_monkey():
  
     # Say a command, and listen for the caller to press a key. When they press
     # a key, redirect them to /handle-key.
-    resp.message("Original Message: \n" + str(to_respond) + "\ncounter: " + str(counter))
+    # resp.message("Original Message: \n" + str(to_respond) + "\ncounter: " + str(counter))
+    received_message = str(received_message)
+    To = ''
+    From = ''
+    Mode = ''
+    for word in received_message.split():
+        while word.next() != 'From' or word.next() != 'Mode':
+            To += word.next()
+            word = word.next()
+        if word == 'From':
+            while word.next() != 'Mode':
+                From += word.next()
+                word = word.next()
+            if word == 'Mode':
+                Mode = word.next()
+    print (To, From, Mode)
+
+            
+    directions = readUrl()
     with resp.gather(numDigits=1, action="/handle-key", method="POST") as g:
         g.say("To speak to a real monkey, press 1. Press any other key to start over.")
  
