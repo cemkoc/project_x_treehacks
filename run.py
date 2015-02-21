@@ -1,6 +1,10 @@
 from flask import Flask, request, redirect, session
 import twilio.twiml
-import mapsTest 
+
+import urllib2
+import json
+import re
+from pprint import pprint
 
 
 callers = {
@@ -48,9 +52,9 @@ def hello_monkey():
     # print received_message
 
     # resp.message("hiiiii")
-    To = []
-    From = []
-    Mode = []
+    # To = []
+    # From = []
+    # Mode = []
     # i1 = received_message.split().index('To')
     # i2 = received_message.split().index('From')
     # i3 = received_message.split().index('Mode')
@@ -59,21 +63,21 @@ def hello_monkey():
     # To = received_message[i1+1:i2]
     # From = received_message[i2+1: i3]
     # Mode = received_message[i3+1:]
-    To = received_message2[1:4]
-    From = received_message2[4:8]
-    Mode = received_message2[8:]
-    arg1 = ''
-    arg2 = ''
-    arg3 = ''
+    # To = received_message2[1:4]
+    # From = received_message2[4:8]
+    # Mode = received_message2[8:]
+    # arg1 = ''
+    # arg2 = ''
+    # arg3 = ''
 
-    for el in To:
-        arg1 = arg1 + el
-    for el in From:
-        arg2 = arg2 + el
-    for el in Mode:
-        arg3 = arg3 + el
-           
-    directions = mapsTest.readUrl(arg1, arg2, arg3)
+    # for el in To:
+    #     arg1 = arg1 + el
+    # for el in From:
+    #     arg2 = arg2 + el
+    # for el in Mode:
+    #     arg3 = arg3 + el
+    # resp.message(())       
+    directions = readUrl(received_message2)
     #directions is a list
     to_respond = ''
     for el in directions:
@@ -112,7 +116,20 @@ def handle_key():
 #     resp = twilio.twiml.Response()
 #     resp.message("Hello, Mobile Monkey")
 #     return str(resp)
- 
+
+def readUrl(string, mode='walking'):
+    origin = string.split()[0]
+    destination = string.split()[1]
+    response = urllib2.urlopen('https://maps.googleapis.com/maps/api/directions/json?origin=' + origin + '&destination='+destination+'&mode=' + mode + '&key=AIzaSyAMShh7VdTHP_NDUPRW-dI0kCyFa84d9ko')
+    html = response.read()
+    data = json.loads(html)
+    directionList = []
+    for x in data['routes'][0]['legs'][0]['steps']:
+        direction= x['html_instructions']
+        directionList.append(re.sub(r'<.*?>', '', direction))
+    
+    return directionList
+
 if __name__ == "__main__":
     app.run(debug=True)
 
