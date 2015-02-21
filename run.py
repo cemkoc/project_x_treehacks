@@ -18,7 +18,27 @@ def hello_monkey():
 	else:
 		resp.say("Hello Stranger")
 
+	with resp.gather(numDigits=1, action="/handle-key", method="POST") as g:
+		g.say("To speak to a real person, please press 1. Press any other key to start over.")
+
 	return str(resp)
+@app.route("/handle-key", methods=['GET', 'POST'])
+def handle_key():
+	""" Handle key when pressed by a caller."""
+
+	#Get the digit pressed by the caller
+	pressed_digit = request.values.get('Digits', None)
+	if pressed_digit == "1":
+		resp = twilio.twiml.Response()
+		#Dial an actual number
+		# resp.dial("+14152983952")
+		resp.say("The call failed or hung up.")
+
+		return str(resp)
+	# caller pressed any other key
+	else: 
+		return redirect("/")
+
 
 if __name__ == "__main__":
 	app.run(debug=True)
