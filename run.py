@@ -3,11 +3,20 @@ import twilio.twiml
 
 app = Flask(__name__)
 
+callers = {
+	"+14152983952": "Jem Koch"
+}
+
 @app.route("/", methods=['GET', 'POST'])
 def hello_monkey():
-	""" Respond to incoming requests."""
+	# Get the caller's phone number from imcoming Twilio request
+	from_number = request.values.get('From', None)
 	resp = twilio.twiml.Response()
-	resp.say("Hello Monkey")
+
+	if from_number in callers:
+		resp.say("Well hello there " + callers[from_number])
+	else:
+		resp.say("Hello Stranger")
 
 	return str(resp)
 
