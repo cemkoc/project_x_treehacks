@@ -7,7 +7,7 @@ callers = {
     "+14158675309": "Curious George",
     "+14158675310": "Boots",
     "+14158675311": "Virgil",
-    "+14158025332": "JOHN KOCH"
+    "+14158025332": "Can Koc"
 }
  
 @app.route("/", methods=['GET', 'POST'])
@@ -22,7 +22,7 @@ def hello_monkey():
     resp = twilio.twiml.Response()
     # Greet the caller by name
     resp.say("Hello " + caller)
-    resp.message("Hello, "  + caller + str(to_respond))
+    resp.message(str(to_respond))
     # Play an mp3
     # resp.play("http://demo.twilio.com/hellomonkey/monkey.mp3")
  
