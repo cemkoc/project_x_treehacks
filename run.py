@@ -45,10 +45,11 @@ def hello_monkey():
     # Say a command, and listen for the caller to press a key. When they press
     # a key, redirect them to /handle-key.
     # resp.message("Original Message: \n" + str(to_respond) + "\ncounter: " + str(counter))
-    # if received_message == None:
-    #     # resp.message("SENT NOTHING")
-    #     return str(resp)
-    received_message2 = str(received_message)
+    if received_message == None:
+        # app.logger.warning('received message : ')
+        received_message2 = 'Stanford Berkeley'
+    else:
+        received_message2 = str(received_message)
     # print received_message
 
     # resp.message("hiiiii")
@@ -117,9 +118,11 @@ def handle_key():
 #     resp.message("Hello, Mobile Monkey")
 #     return str(resp)
 
-def readUrl(string='Stanford Berkeley', mode='walking'):
-    origin = string.split()[0]
-    destination = string.split()[1]
+def readUrl(s, mode='walking'):
+    # if s == 'None':
+    #     s = "Stanford Berkeley"
+    origin = s.split()[0]
+    destination = s.split()[1]
     response = urllib2.urlopen('https://maps.googleapis.com/maps/api/directions/json?origin=' + origin + '&destination='+destination+'&mode=' + mode + '&key=AIzaSyAMShh7VdTHP_NDUPRW-dI0kCyFa84d9ko')
     html = response.read()
     data = json.loads(html)
