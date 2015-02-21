@@ -1,4 +1,11 @@
 Flask==0.9
 Jinja2==2.6
+MarkupSafe==0.23
 Werkzeug==0.8.3
 gunicorn==0.17.2
+httplib2==0.9
+itsdangerous==0.24
+pytz==2014.10
+six==1.9.0
+twilio==3.7.1
+wsgiref==0.1.2
