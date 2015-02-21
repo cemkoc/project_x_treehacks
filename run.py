@@ -41,25 +41,25 @@ def hello_monkey():
     # Say a command, and listen for the caller to press a key. When they press
     # a key, redirect them to /handle-key.
     # resp.message("Original Message: \n" + str(to_respond) + "\ncounter: " + str(counter))
-    # if received_message == None:
+    if received_message == None:
         # resp.message("SENT NOTHING")
-        # return str(resp)
+        return str(resp)
     received_message = str(received_message)
     # print received_message
 
-    resp.message("hiiiii")
+    # resp.message("hiiiii")
     To = []
     From = []
     Mode = []
     i1 = received_message.split().index('To')
     i2 = received_message.split().index('From')
     i3 = received_message.split().index('Mode')
-    if len(received_message.split()) < 6 :
-        return str(resp)
+    # if len(received_message.split()) < 6 :
+    #     return str(resp)
     To = received_message[i1+1:i2]
     From = received_message[i2+1: i3]
     Mode = received_message[i3+1:]
-
+    # To = received_message[0:]
     arg1 = ''
     arg2 = ''
     arg3 = ''
