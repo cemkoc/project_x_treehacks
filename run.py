@@ -93,9 +93,11 @@ def getDirection(origin, destination, mode, client, person):
 	for x in directionList[2:]:
 		directionString = directionString + str(count) + ': ' + x + '\n'
 		count = count + 1
-
-	client.messages.create(to=person, from_="+14804050163", body=directionString)
-    return directionString
+    if len(directionString) > 1500:
+        client.messages.create(to=person, from_="+14804050163", body='sorry you need to specify a city or the app crashed')
+    else:
+        client.messages.create(to=person, from_="+14804050163", body=directionString)
+        return directionString
 def getNews(message, client, person):
     return None
 
