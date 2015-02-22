@@ -19,6 +19,8 @@ def startApplicationMonkey():
     auth_token = "267478d679e713a9c97bccf6cadb4b0b"
     account_sid = "ACdb5fb6ce8be1e4b949cee8255148af50"
     client = TwilioRestClient(account_sid, auth_token)
+    
+    print "sadasdasdasd!!!!! ", received_message
 
     if not from_number:
     	return 'not handled. no phone number'
