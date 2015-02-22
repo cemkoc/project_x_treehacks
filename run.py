@@ -103,7 +103,7 @@ def getWeather(message, client, person):
     commaIndex = message.find(',')
     if commaIndex == -1: #not found
         pleaseComma = 'Please put comma between town and city like this: Berkeley, California'
-        client.messages.create(to=person, from_="+17324791835", body=pleaseComma)
+        client.messages.create(to=person, from_="+14804050163", body=pleaseComma)
         return
     city = message[8:commaIndex].strip().replace(' ', '+')
     state = message[commaIndex+1:].strip().replace(' ', '+')
@@ -116,7 +116,7 @@ def getWeather(message, client, person):
     current = str(data['main']['temp']) + ' Fahrenheit'
     finalWeather = "\nToday's Weather: \n" + weather + ': ' + description + '\nCurrent: '
     finalWeather += current + '\nWindspeed: ' + windspeed
-    client.messages.create(to=person, from_="+17324791835", body=finalWeather)
+    client.messages.create(to=person, from_="+14804050163", body=finalWeather)
 
 def yelpIt(message, client, person):
     if message == None:
