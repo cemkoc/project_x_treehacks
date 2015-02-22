@@ -53,7 +53,7 @@ def route_request(message, client, person):
         "WEATHER": getWeather,
         "MAP": getMap,
         "STATUS": sendStatusUpdate,
-        "YELP": yelpSearch }
+        "YELP": yelpIt }
 
 	handle[keyWord](message, client, person)
 
@@ -110,7 +110,7 @@ def getNews(message, client, person):
 
 def getWeather(message, client, person):
     return None
-def yelpSearch(message, client, person):
+def yelpIt(message, client, person):
     if message == None:
         message = 'Yelp for dinner near San Francisco, CA'
     indexFor = message.find(' for ')
