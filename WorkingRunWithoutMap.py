@@ -33,7 +33,7 @@ def startApplicationMonkey():
     
     route_request(received_message, client, from_number)
     
-    return 'handled'
+    # return 'handled'
 
 # def getMap():
 #     if body:
@@ -63,7 +63,7 @@ def textDirection(body, client, person):
 	indexMode = body.find(modeType)
 	startAddr = body[indexFrom+6:indexTo].strip()
 	endAddr = body[indexTo + 4:indexMode].strip()
-	getDirection(startAddr, endAddr, modeType, client, person)
+	return getDirection(startAddr, endAddr, modeType, client, person)
 
 def getDirection(origin, destination, mode, client, person):
 
@@ -76,33 +76,33 @@ def getDirection(origin, destination, mode, client, person):
 	response = urllib2.urlopen('https://maps.googleapis.com/maps/api/directions/json?origin=' + origin + '&destination='+destination+'&mode=' + mode + '&key=AIzaSyAMShh7VdTHP_NDUPRW-dI0kCyFa84d9ko')
 	html = response.read()
 	data = json.loads(html)
-	if (data['status']=='ZERO_RESULTS'):
-		sorry = 'Sorry, no directions were found. Could you please specify City in your address?'
-		client.messages.create(to=person, from_="+14804050163", body=sorry)
-		return
-	
-	directionList = []
-	start = "Starting from " + data['routes'][0]['legs'][0]['start_address']
-	end = "Ending at " + data['routes'][0]['legs'][0]['end_address']
-	directionList.append(start)
-	directionList.append(end)
+	print 'HELLO LOG'
+    
+    if (data['status'] == 'ZERO_RESULTS'):
+        client.messages.create(to=person, from_="+14804050163", body="sorry this is gonna take too much time, please specify a city")
+        return directionString
+    
+    directionList = []
+    start = "Starting from " + data['routes'][0]['legs'][0]['start_address']
+    end = "Ending at " + data['routes'][0]['legs'][0]['end_address']
+    directionList.append(start)
+    directionList.append(end)
 
-	for x in data['routes'][0]['legs'][0]['steps']:
-		direction= x['html_instructions']
-		distance = x['distance']['text']
-		directionList.append(re.sub(r'<.*?>', '', direction) + ' (' + distance +') ')
+    for x in data['routes'][0]['legs'][0]['steps']:
+        direction= x['html_instructions']
+        distance = x['distance']['text']
+        directionList.append(re.sub(r'<.*?>', '', direction) + ' (' + distance +') ')
 
-	count = 1
-	directionString = directionList[0] + ' and ' + directionList[1] + ' ' + mode + '\n '
-	for x in directionList[2:]:
-		directionString = directionString + str(count) + ': ' + x + '\n'
-		count = count + 1
-	if len(directionString) > 1500:
-		sorry = 'Sorry, no directions were found. Could you please specify City in your address?'
-		client.messages.create(to=person, from_="+14804050163", body=sorry)
-	else:
-		client.messages.create(to=person, from_="+14804050163", body=directionString)
-
+    count = 1
+    directionString = directionList[0] + ' and ' + directionList[1] + ' ' + mode + '\n '
+    for x in directionList[2:]:
+        directionString = directionString + str(count) + ': ' + x + '\n'
+        count = count + 1
+    if len(directionString) > 1500:
+        client.messages.create(to=person, from_="+14804050163", body='sorry you need to specify a city or the app crashed')
+    else:
+        client.messages.create(to=person, from_="+14804050163", body=directionString)
+        return directionString
 def getNews(message, client, person):
     return None
 
@@ -110,17 +110,7 @@ def getWeather(message, client, person):
     return None
 
 def getMap(message, client, person):
-	#map Berkeley CA. Sends MMS
-    if not message:
-    	client.messages.create(to=person, from_="+14804050163", body='Sorry, could not process your request')
-    else:
-    	message = message.strip()
-    	message = message[4:]
-    	address = message.replace(' ', '+')
-    	mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center=" + address + "&zoom=16&size=600x300&maptype=roadmap"
-    	media_url=[mapUrl]
-    	client.messages.create(to=person, from_="+14804050163", body=message, media_url=[mapUrl])
-
+    return None
 
 def sendStatusUpdate(message, client, person):
     return None	
