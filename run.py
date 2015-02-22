@@ -12,15 +12,12 @@ import yelpSearch
 @app.route("/", methods=['GET', 'POST'])
 def startApplicationMonkey():
     from_number = request.values.get('From', None)
-    #alan = "+17329252682"
-    print from_number
     received_message = request.values.get('Body', None)
 
     auth_token = "267478d679e713a9c97bccf6cadb4b0b"
     account_sid = "ACdb5fb6ce8be1e4b949cee8255148af50"
     client = TwilioRestClient(account_sid, auth_token)
     
-    print "sadasdasdasd!!!!! ", received_message
 
     if not from_number:
     	return 'not handled. no phone number'
@@ -106,7 +103,6 @@ def getWeather(message, client, person):
     return None
 
 def yelpIt(message, client, person):
-    print "yelpIt GOT CALLED !!!! \n"
     if message == None:
         message = 'Yelp for dinner near San Francisco, CA'
     indexFor = message.find(' for ')
@@ -116,9 +112,7 @@ def yelpIt(message, client, person):
     getYelpSearch(term, location, client, person)
 
 def getYelpSearch(term, location, client, person):
-    print "TERM AND LOCATION ARE: ", term, location
     data = yelpSearch.query_api(term, location)
-    print "DATA  :::::: " , data
     name = data['businesses'][0]['name']
     rating = data['businesses'][0]['rating']
     phone = data['businesses'][0]['display_phone']
@@ -129,9 +123,9 @@ def getYelpSearch(term, location, client, person):
         address = address + x  
 
 
-    to_respond = 'Yelp Search found: ' + str(name) + 'with rating: ' + str(rating) + 'phone number: ' + str(phone) + 'is it Closed? ' + str(is_Closed)
-    to_respond = to_respond + 'address is: ' + str(address)
-    print "TO RESPOND : !!!!: -------- ", to_respond
+    to_respond = 'Yelp Search found: ' + str(name) + '\n' + ' with rating: ' + str(rating) + '\n' + ' phone number: ' + str(phone) + '\n' +' is it Closed? ' + str(is_Closed)
+    to_respond = to_respond + '\n' + 'address is: ' + str(address)
+    # print "TO RESPOND : !!!!: -------- ", to_respond
     client.messages.create(to=person, from_='+14804050163', body=to_respond)
 
 
