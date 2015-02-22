@@ -118,6 +118,7 @@ def yelpIt(message, client, person):
 def getYelpSearch(term, location, client, person):
     print "TERM AND LOCATION ARE: ", term, location
     data = yelpSearch.query_api(term, location)
+    print "DATA  :::::: " , data
     name = data['businesses'][0]['name']
     rating = data['businesses'][0]['rating']
     phone = data['businesses'][0]['display_phone']
