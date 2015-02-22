@@ -32,10 +32,10 @@ def startApplicationMonkey():
     else:
         if type(received_message) != str:
             received_message = str(received_message)
-    print "asdasdasdasdasdas!!!!!!!!" , received_message
+    # print "asdasdasdasdasdas!!!!!!!!" , received_message
     route_request(received_message, client, from_number)
     
-    return 'handled'
+    # return 'handled'
 
 # def getMap():
 #     if body:
@@ -117,8 +117,8 @@ def yelpSearch(message, client, person):
     indexNear = message.find(' near ')
     term = message[indexFor+5:indexNear].strip()
     location = message[indexNear+6:].strip()
-    print "ALKSJDLSAJDLKASJDLKASJDLKASJD", term, location
-    getYelpSearch(term, location, client, person)
+    # print "ALKSJDLSAJDLKASJDLKASJDLKASJD", term, location
+    return getYelpSearch(term, location, client, person)
 
 def getYelpSearch(term, location, client, person):
     data = yelpSearch.query_api(term, location)
@@ -129,11 +129,11 @@ def getYelpSearch(term, location, client, person):
     is_Closed = data['businesses'][0]['is_closed']
     address = ''
     for x in data['businesses'][0]['location']['display_address']:
-        address = address + x
+        address = address + x  
 
     to_respond = 'Yelp Search found: \n' + name + '\n' + 'with rating: ' + rating + '\n' + 'phone number: ' + phone + '\n' + 'is it Closed? ' + is_Closed
     to_respond = to_respond + '\n address is: ' + address
-    client.messages.create(to=person, from_='+14804050163', body=to_respond)
+    return client.messages.create(to=person, from_='+14804050163', body=to_respond)
 
 
 
