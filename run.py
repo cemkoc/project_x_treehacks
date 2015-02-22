@@ -27,11 +27,7 @@ def hello_monkey():
 
     directions = textDirection(received_message)
 
-    to_respond = ''
-    
-    for el in directions:
-        to_respond = to_respond + '\n' + el
-    resp.message(to_respond)
+    resp.message(directions)
  
     return str(resp)
  
@@ -66,18 +62,31 @@ def handle_key():
 def getDirection(origin, destination, mode='walking'):
     if origin:
         origin = origin.strip().replace(' ', '+')
+
     if destination:
         destination = destination.strip().replace(' ', '+')
-    response = urllib2.urlopen('https://maps.googleapis.com/maps/api/directions/json?origin=' + origin + '&destination='+ destination +'&mode=' + mode + '&key=AIzaSyAMShh7VdTHP_NDUPRW-dI0kCyFa84d9ko')
+
+    response = urllib2.urlopen('https://maps.googleapis.com/maps/api/directions/json?origin=' + origin + '&destination='+destination+'&mode=' + mode + '&key=AIzaSyAMShh7VdTHP_NDUPRW-dI0kCyFa84d9ko')
     html = response.read()
     data = json.loads(html)
+    print 'HELLO LOG'
     directionList = []
-    # print data
+    start = "Starting from " + data['routes'][0]['legs'][0]['start_address']
+    end = "Ending at " + data['routes'][0]['legs'][0]['end_address']
+    directionList.append(start)
+    directionList.append(end)
+
     for x in data['routes'][0]['legs'][0]['steps']:
         direction= x['html_instructions']
-        directionList.append(re.sub(r'<.*?>', '', direction))
-    
-    return directionList
+        distance = x['distance']['text']
+        directionList.append(re.sub(r'<.*?>', '', direction) + ' (' + distance +') ')
+
+    count = 1
+    directionString = directionList[0] + ' and ' + directionList[1] + '\n '
+    for x in directionList[2:]:
+        directionString = directionString + str(count) + ': ' + x + '\n'
+        count = count + 1   
+    return directionString
 
 def textDirection(body):
     if body == None:
