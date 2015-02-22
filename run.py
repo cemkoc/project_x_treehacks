@@ -82,7 +82,7 @@ def getDirection(origin, destination, mode, client, person):
 	end = "Ending at " + data['routes'][0]['legs'][0]['end_address']
 	directionList.append(start)
 	directionList.append(end)
-    if (data['status'] = 'ZERO_RESULTS'):
+    if (data['status'] == 'ZERO_RESULTS'):
         client.messages.create(to=person, from_="+14804050163", body="sorry this is gonna take too much time, please specify a city")
         return directionString
 	for x in data['routes'][0]['legs'][0]['steps']:
