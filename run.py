@@ -5,7 +5,9 @@ import urllib2
 import json
 import re
 app = Flask(__name__)
- 
+
+import yelpSearch
+
 
 @app.route("/", methods=['GET', 'POST'])
 def startApplicationMonkey():
@@ -50,7 +52,8 @@ def route_request(message, client, person):
         "NEWS": getNews,
         "WEATHER": getWeather,
         "MAP": getMap,
-        "STATUS": sendStatusUpdate }
+        "STATUS": sendStatusUpdate,
+        "YELP": yelpSearch }
 
 	handle[keyWord](message, client, person)
 
@@ -66,7 +69,6 @@ def textDirection(body, client, person):
 	getDirection(startAddr, endAddr, modeType, client, person)
 
 def getDirection(origin, destination, mode, client, person):
-
     if origin:
     	origin = origin.strip().replace(' ', '+')
 
@@ -108,6 +110,33 @@ def getNews(message, client, person):
 
 def getWeather(message, client, person):
     return None
+def yelpSearch(message, client, person):
+    if message == None:
+        message = 'yelp for dinner places near San Francisco, CA'
+    indexFor = message.find(' for ')
+    indexNear = message.find(' near ')
+    term = message[indexFor+5:indexNear].strip()
+    location = message[indexNear+6:].strip()
+
+    getYelpSearch(term, location, client, person)
+
+def getYelpSearch(term, location, client, person):
+    data = yelpSearch.query_api(term, location)
+    name = data['businesses'][0]['name']
+    rating = data['businesses'][0]['rating']
+    phone = data['businesses'][0]['display_phone']
+    image_url = data['businesses'][0]['image_url']
+    is_Closed = data['businesses'][0]['is_closed']
+    address = ''
+    for x in data['businesses'][0]['location']['display_address']:
+        address = address + x
+
+    to_respond = 'Yelp Search found: \n' + name + '\n' + 'with rating: ' + rating + '\n' + 'phone number: ' + phone + '\n' + 'is it Closed? ' + is_Closed
+    to_respond = to_respond + '\n address is: ' + address
+    client.messages.create(to=person, from_='+14804050163', body=to_respond)
+
+
+
 
 def getMap(message, client, person):
 	#map Berkeley CA. Sends MMS
