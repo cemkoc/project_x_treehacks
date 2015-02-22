@@ -83,6 +83,7 @@ def hello_monkey():
     to_respond = ''
     for el in directions:
         to_respond = to_respond + '\n' + el
+    to_respond += '() : and 1 ft'
     
     resp.message(to_respond)
 
