@@ -129,8 +129,8 @@ def getYelpSearch(term, location, client, person):
         address = address + x  
 
 
-    to_respond = 'Yelp Search found: \n' + name + '\n' + 'with rating: ' + rating + '\n' + 'phone number: ' + phone + '\n' + 'is it Closed? ' + is_Closed
-    to_respond = to_respond + '\n address is: ' + address
+    to_respond = 'Yelp Search found: ' + str(name) + 'with rating: ' + str(rating) + 'phone number: ' + str(phone) + 'is it Closed? ' + str(is_Closed)
+    to_respond = to_respond + 'address is: ' + str(address)
     print "TO RESPOND : !!!!: -------- ", to_respond
     client.messages.create(to=person, from_='+14804050163', body=to_respond)
 
