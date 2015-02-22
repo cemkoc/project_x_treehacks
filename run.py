@@ -63,7 +63,7 @@ def textDirection(body, client, person):
 	indexMode = body.find(modeType)
 	startAddr = body[indexFrom+6:indexTo].strip()
 	endAddr = body[indexTo + 4:indexMode].strip()
-	getDirection(startAddr, endAddr, modeType, client, person)
+	return getDirection(startAddr, endAddr, modeType, client, person)
 
 def getDirection(origin, destination, mode, client, person):
 
@@ -95,7 +95,7 @@ def getDirection(origin, destination, mode, client, person):
 		count = count + 1
 
 	client.messages.create(to=person, from_="+17324791835", body=directionString)
-
+    return directionString
 def getNews(message, client, person):
     return None
 
