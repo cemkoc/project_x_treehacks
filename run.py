@@ -104,6 +104,7 @@ def getNews(message, client, person):
 
 def getWeather(message, client, person):
     return None
+
 def yelpIt(message, client, person):
     print "yelpIt GOT CALLED !!!! \n"
     if message == None:
@@ -126,8 +127,10 @@ def getYelpSearch(term, location, client, person):
     for x in data['businesses'][0]['location']['display_address']:
         address = address + x  
 
+
     to_respond = 'Yelp Search found: \n' + name + '\n' + 'with rating: ' + rating + '\n' + 'phone number: ' + phone + '\n' + 'is it Closed? ' + is_Closed
     to_respond = to_respond + '\n address is: ' + address
+    print "TO RESPOND : !!!!: -------- ", to_respond
     client.messages.create(to=person, from_='+14804050163', body=to_respond)
 
 
