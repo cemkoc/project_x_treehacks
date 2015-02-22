@@ -33,7 +33,7 @@ def startApplicationMonkey():
     
     route_request(received_message, client, from_number)
     
-    return 'handled'
+    # return 'handled'
 
 # def getMap():
 #     if body:
