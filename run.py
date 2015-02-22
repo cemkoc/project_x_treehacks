@@ -37,15 +37,7 @@ def startApplicationMonkey():
     # print "asdasdasdasdasdas!!!!!!!!" , received_message
     route_request(received_message, client, from_number)
     
-    # return 'handled'
-
-# def getMap():
-#     if body:
-#     	address = body.strip().replace(' ', '+')
-#     else:
-#     	address = '269+Candlewyck+Court' #nonetype handler.
-#     mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center=" + address + "&zoom=16&size=600x300&maptype=roadmap"
-    
+    # return 'handled'    
 def route_request(message, client, person):
 
 	keyWord = map(lambda x: x.upper(), message.split())[0]
@@ -113,6 +105,7 @@ def getNews(message, client, person):
 def getWeather(message, client, person):
     return None
 def yelpIt(message, client, person):
+    print "yelpIt GOT CALLED !!!! \n"
     if message == None:
         message = 'Yelp for dinner near San Francisco, CA'
     indexFor = message.find(' for ')
@@ -122,6 +115,7 @@ def yelpIt(message, client, person):
     getYelpSearch(term, location, client, person)
 
 def getYelpSearch(term, location, client, person):
+    print "TERM AND LOCATION ARE: ", term, location
     data = yelpSearch.query_api(term, location)
     name = data['businesses'][0]['name']
     rating = data['businesses'][0]['rating']
