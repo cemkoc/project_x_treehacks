@@ -45,11 +45,8 @@ def hello_monkey():
     # Say a command, and listen for the caller to press a key. When they press
     # a key, redirect them to /handle-key.
     # resp.message("Original Message: \n" + str(to_respond) + "\ncounter: " + str(counter))
-    if received_message == None:
-        # app.logger.warning('received message : ')
-        received_message2 = 'Stanford Berkeley'
-    else:
-        received_message2 = str(received_message)
+
+    directions = textDirection(str(received_message))
     # print received_message
 
     # resp.message("hiiiii")
@@ -78,13 +75,10 @@ def hello_monkey():
     # for el in Mode:
     #     arg3 = arg3 + el
     # resp.message(())       
-    directions = readUrl(received_message2)
     #directions is a list
     to_respond = ''
     for el in directions:
         to_respond = to_respond + '\n' + el
-    to_respond += '() : and 1 ft'
-    
     resp.message(to_respond)
 
     # with resp.gather(numDigits=1, action="/handle-key", method="POST") as g:
@@ -120,12 +114,7 @@ def handle_key():
 #     resp.message("Hello, Mobile Monkey")
 #     return str(resp)
 
-def readUrl(s, mode='walking'):
-    # if s == 'None':
-    #     s = "Stanford Berkeley"
-
-    origin = s.split()[0]
-    destination = s.split()[1]
+def getDirection(origin, destination, mode='walking'):
     response = urllib2.urlopen('https://maps.googleapis.com/maps/api/directions/json?origin=' + origin + '&destination='+destination+'&mode=' + mode + '&key=AIzaSyAMShh7VdTHP_NDUPRW-dI0kCyFa84d9ko')
     html = response.read()
     data = json.loads(html)
@@ -136,6 +125,15 @@ def readUrl(s, mode='walking'):
         directionList.append(re.sub(r'<.*?>', '', direction))
     
     return directionList
+
+def textDirection(body):
+    if body == None:
+        body = 'Go from stanford to palo alto '
+    indexFrom = body.find(' from ')
+    indexTo = body.find(' to ')
+    startAddr = body[indexFrom+6:indexTo].strip()
+    endAddr = body[indexTo + 4:].strip()
+    return getDirection(startAddr, endAddr)
 
 if __name__ == "__main__":
     app.run(debug=True)
