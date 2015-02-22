@@ -100,7 +100,23 @@ def getNews(message, client, person):
     return None
 
 def getWeather(message, client, person):
-    return None
+    commaIndex = message.find(',')
+    if commaIndex == -1: #not found
+        pleaseComma = 'Please put comma between town and city like this: Berkeley, California'
+        client.messages.create(to=person, from_="+17324791835", body=pleaseComma)
+        return
+    city = message[8:commaIndex].strip().replace(' ', '+')
+    state = message[commaIndex+1:].strip().replace(' ', '+')
+    response = urllib2.urlopen('http://api.openweathermap.org/data/2.5/weather?q=' + city+ ',' + state + '&units=imperial')
+    html = response.read()
+    data = json.loads(html)
+    windspeed = str(data['wind']['speed']) + ' mph'
+    weather = data['weather'][0]['main']
+    description = data['weather'][0]['description']
+    current = str(data['main']['temp']) + ' Fahrenheit'
+    finalWeather = "\nToday's Weather: \n" + weather + ': ' + description + '\nCurrent: '
+    finalWeather += current + '\nWindspeed: ' + windspeed
+    client.messages.create(to=person, from_="+17324791835", body=finalWeather)
 
 def yelpIt(message, client, person):
     if message == None:
@@ -130,7 +146,6 @@ def getYelpSearch(term, location, client, person):
     to_respond = 'Yelp search found: ' + '\n' + str(name) + '\n' + ' With rating: ' + str(rating) + '\n' + ' Phone number: ' + str(phone) + '\n' +' Is it Closed? ' + str(is_Closed)
     to_respond = to_respond + '\n' + 'Address is: ' + str(address)
     client.messages.create(to=person, from_='+14804050163', body=to_respond)
-
 
 
 
