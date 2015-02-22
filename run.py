@@ -112,13 +112,12 @@ def getWeather(message, client, person):
     return None
 def yelpSearch(message, client, person):
     if message == None:
-        message = 'yelp for dinner places near San Francisco, CA'
+        message = 'Yelp for dinner near San Francisco, CA'
     indexFor = message.find(' for ')
     indexNear = message.find(' near ')
     term = message[indexFor+5:indexNear].strip()
     location = message[indexNear+6:].strip()
-    # print "ALKSJDLSAJDLKASJDLKASJDLKASJD", term, location
-    return getYelpSearch(term, location, client, person)
+    getYelpSearch(term, location, client, person)
 
 def getYelpSearch(term, location, client, person):
     data = yelpSearch.query_api(term, location)
@@ -133,7 +132,7 @@ def getYelpSearch(term, location, client, person):
 
     to_respond = 'Yelp Search found: \n' + name + '\n' + 'with rating: ' + rating + '\n' + 'phone number: ' + phone + '\n' + 'is it Closed? ' + is_Closed
     to_respond = to_respond + '\n address is: ' + address
-    return client.messages.create(to=person, from_='+14804050163', body=to_respond)
+    client.messages.create(to=person, from_='+14804050163', body=to_respond)
 
 
 
