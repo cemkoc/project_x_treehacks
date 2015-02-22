@@ -90,12 +90,14 @@ def getDirection(origin, destination, mode='walking'):
 
 def textDirection(body):
     if body == None:
-        body = 'Go from stanford to palo alto '
+        body = 'Go from 1747 spruce berkeley to emeryville tubemogul driving'
     indexFrom = body.find(' from ')
     indexTo = body.find(' to ')
     startAddr = body[indexFrom+6:indexTo].strip()
     endAddr = body[indexTo + 4:].strip()
-    return getDirection(startAddr, endAddr)
+    modeAddr = body.split()[-1].strip()
+    indexMode = body.find(modeAddr)
+    return getDirection(startAddr, endAddr, modeAddr)
 
 if __name__ == "__main__":
     app.run(debug=True)
