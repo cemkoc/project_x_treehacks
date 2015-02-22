@@ -32,7 +32,7 @@ def startApplicationMonkey():
     else:
         if type(received_message) != str:
             received_message = str(received_message)
-    
+    print "asdasdasdasdasdas!!!!!!!!" , received_message
     route_request(received_message, client, from_number)
     
     return 'handled'
@@ -117,7 +117,7 @@ def yelpSearch(message, client, person):
     indexNear = message.find(' near ')
     term = message[indexFor+5:indexNear].strip()
     location = message[indexNear+6:].strip()
-
+    print "ALKSJDLSAJDLKASJDLKASJDLKASJD", term, location
     getYelpSearch(term, location, client, person)
 
 def getYelpSearch(term, location, client, person):
