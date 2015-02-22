@@ -121,12 +121,14 @@ def handle_key():
 def readUrl(s, mode='walking'):
     # if s == 'None':
     #     s = "Stanford Berkeley"
+
     origin = s.split()[0]
     destination = s.split()[1]
     response = urllib2.urlopen('https://maps.googleapis.com/maps/api/directions/json?origin=' + origin + '&destination='+destination+'&mode=' + mode + '&key=AIzaSyAMShh7VdTHP_NDUPRW-dI0kCyFa84d9ko')
     html = response.read()
     data = json.loads(html)
     directionList = []
+    print data
     for x in data['routes'][0]['legs'][0]['steps']:
         direction= x['html_instructions']
         directionList.append(re.sub(r'<.*?>', '', direction))
