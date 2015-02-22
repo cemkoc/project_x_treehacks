@@ -118,6 +118,10 @@ def getYelpSearch(term, location, client, person):
     phone = data['businesses'][0]['display_phone']
     image_url = data['businesses'][0]['image_url']
     is_Closed = data['businesses'][0]['is_closed']
+    if is_Closed == True:
+        is_Closed = 'Yes'
+    elif is_Closed == False:
+        is_Closed = 'No'
     address = ''
     for x in data['businesses'][0]['location']['display_address']:
         address = address + x  
