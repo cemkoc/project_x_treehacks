@@ -5,36 +5,44 @@ import urllib2
 import json
 import re
 app = Flask(__name__)
-
-@app.route('/abcd')
-def caller():
-	response = 'hi'
-	return str(response) 
+ 
 
 @app.route("/", methods=['GET', 'POST'])
 def startApplicationMonkey():
     from_number = request.values.get('From', None)
-    cem = "+14152983952"
-    can = "+14158025332"
+    #alan = "+17329252682"
+    print from_number
     received_message = request.values.get('Body', None)
 
     auth_token = "267478d679e713a9c97bccf6cadb4b0b"
     account_sid = "ACdb5fb6ce8be1e4b949cee8255148af50"
     client = TwilioRestClient(account_sid, auth_token)
 
+    if not from_number:
+    	return 'not handled. no phone number'
     if not received_message:
     	#client.messages.create(to=alan, from_="+17324791835", body='nothing received_message')
         #return 'nothing received'
-        received_message = 'Go from berkeley to stanford driving'
+        received_message = 'unhandled'
+        client.messages.create(to=from_number, from_="+17324791835", body=received_message)
+        return received_message
+
     else:
         if type(received_message) != str:
             received_message = str(received_message)
     
-    returnedString = route_request(received_message)
-    client.messages.create(to=can, from_="+14804050163", body=returnedString)
-    return returnedString
+    route_request(received_message, client, from_number)
     
-def route_request(message):
+    return 'handled'
+
+# def getMap():
+#     if body:
+#     	address = body.strip().replace(' ', '+')
+#     else:
+#     	address = '269+Candlewyck+Court' #nonetype handler.
+#     mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center=" + address + "&zoom=16&size=600x300&maptype=roadmap"
+    
+def route_request(message, client, person):
 
 	keyWord = map(lambda x: x.upper(), message.split())[0]
 	handle = {
@@ -44,9 +52,9 @@ def route_request(message):
         "MAP": getMap,
         "STATUS": sendStatusUpdate }
 
-	return handle[keyWord](message)
+	handle[keyWord](message, client, person)
 
-def textDirection(body):
+def textDirection(body, client, person):
 	if body == None:
 		body = 'Go from dwinelle to 1555 oxford avenue transit'
 	indexFrom = body.find(' from ')
@@ -55,9 +63,9 @@ def textDirection(body):
 	indexMode = body.find(modeType)
 	startAddr = body[indexFrom+6:indexTo].strip()
 	endAddr = body[indexTo + 4:indexMode].strip()
-	return getDirection(startAddr, endAddr, modeType)
+	getDirection(startAddr, endAddr, modeType, client, person)
 
-def getDirection(origin, destination, mode='walking'):
+def getDirection(origin, destination, mode, client, person):
 
     if origin:
     	origin = origin.strip().replace(' ', '+')
@@ -85,18 +93,19 @@ def getDirection(origin, destination, mode='walking'):
 	for x in directionList[2:]:
 		directionString = directionString + str(count) + ': ' + x + '\n'
 		count = count + 1
-	return directionString
 
-def getNews(message):
+	client.messages.create(to=person, from_="+17324791835", body=directionString)
+
+def getNews(message, client, person):
     return None
 
-def getWeather(message):
+def getWeather(message, client, person):
     return None
 
-def getMap(message):
+def getMap(message, client, person):
     return None
 
-def sendStatusUpdate(message):
+def sendStatusUpdate(message, client, person):
     return None	
 
 if __name__ == "__main__":
