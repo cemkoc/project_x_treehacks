@@ -77,24 +77,27 @@ def getDirection(origin, destination, mode, client, person):
 	html = response.read()
 	data = json.loads(html)
 	print 'HELLO LOG'
-	directionList = []
-	start = "Starting from " + data['routes'][0]['legs'][0]['start_address']
-	end = "Ending at " + data['routes'][0]['legs'][0]['end_address']
-	directionList.append(start)
-	directionList.append(end)
+    
     if (data['status'] == 'ZERO_RESULTS'):
         client.messages.create(to=person, from_="+14804050163", body="sorry this is gonna take too much time, please specify a city")
         return directionString
-	for x in data['routes'][0]['legs'][0]['steps']:
-		direction= x['html_instructions']
-		distance = x['distance']['text']
-		directionList.append(re.sub(r'<.*?>', '', direction) + ' (' + distance +') ')
+    
+    directionList = []
+    start = "Starting from " + data['routes'][0]['legs'][0]['start_address']
+    end = "Ending at " + data['routes'][0]['legs'][0]['end_address']
+    directionList.append(start)
+    directionList.append(end)
 
-	count = 1
-	directionString = directionList[0] + ' and ' + directionList[1] + ' ' + mode + '\n '
-	for x in directionList[2:]:
-		directionString = directionString + str(count) + ': ' + x + '\n'
-		count = count + 1
+    for x in data['routes'][0]['legs'][0]['steps']:
+        direction= x['html_instructions']
+        distance = x['distance']['text']
+        directionList.append(re.sub(r'<.*?>', '', direction) + ' (' + distance +') ')
+
+    count = 1
+    directionString = directionList[0] + ' and ' + directionList[1] + ' ' + mode + '\n '
+    for x in directionList[2:]:
+        directionString = directionString + str(count) + ': ' + x + '\n'
+        count = count + 1
     if len(directionString) > 1500:
         client.messages.create(to=person, from_="+14804050163", body='sorry you need to specify a city or the app crashed')
     else:
